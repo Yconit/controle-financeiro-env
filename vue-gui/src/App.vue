@@ -6,17 +6,17 @@
 </template>
 
 <script lang="ts">
-    import { Component, Vue } from "vue-property-decorator";
-    import Menu from "@/components/Menu.vue";
+import { Component, Vue } from "vue-property-decorator";
+import Menu from "@/components/Menu.vue";
 
-    @Component({
-        components: {
-            Menu
-        }
-    })
-    class App extends Vue {}
+@Component({
+    components: {
+        Menu
+    }
+})
+class App extends Vue {}
 
-    export default App;
+export default App;
 </script>
 
 <style lang="scss">
@@ -25,6 +25,8 @@
     :root {
         --font-family-default: 'Quicksand', sans-serif;
         
+        --col-gap: 2vw;
+
         // Temas
         --primary-color: rgb(219, 36, 36);
         --primary-color-contrast: rgb(255, 255, 255);
@@ -43,6 +45,10 @@
         --instagram-color-dark: rgb(161, 33, 63);
         --instagram-color-light: rgb(243, 128, 155);
         --instagram-color-light-contrast: rgb(00, 00, 00);
+    }
+
+    *, *:after, *:before {
+        box-sizing: border-box;
     }
 
     /* http://meyerweb.com/eric/tools/css/reset/ 
