@@ -12,15 +12,15 @@ class Tag extends Vue {
     @Prop({
         required: true
     })
-    label!: string;
+    label: string;
 
     @Prop({
         default: 'primary'
     })
-    color!: string;
+    color: string;
 
     @Ref('tag')
-    tagElement!: HTMLSpanElement;
+    tagElement: HTMLSpanElement;
 
     mounted() {
         if (this.tagElement) {
