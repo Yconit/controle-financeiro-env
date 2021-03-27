@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="align-center">
-            <Tag label="Rendas"/>
-            <Tag label="Gastos" color="secondary"/>
-            <Tag label="Disponível" color="instagram"/>
+            <Tag :label="`Rendas ${ totalRendas.toFixed(2) }`"/>
+            <Tag :label="`Gastos ${ totalGastos.toFixed(2) }`" color="secondary"/>
+            <Tag :label="`Disponível ${ totalDisponivel.toFixed(2) }`" color="instagram"/>
         </div>
 
         <Row>
@@ -14,10 +14,10 @@
 
         <Row>
             <Col :size="6">
-                <CardRendaGasto titulo="Rendas" :data="rendas" />
+                <CardRendaGasto titulo="Rendas" v-model="rendas" />
             </Col>
             <Col :size="6">
-                <CardRendaGasto titulo="Gastos" :data="gastos" />
+                <CardRendaGasto titulo="Gastos" v-model="gastos" />
             </Col>
         </Row>
     </div>
@@ -30,6 +30,7 @@ import Alert from '@/components/Alert.vue';
 import Row from '@/components/Row.vue';
 import Col from '@/components/Col.vue';
 import CardRendaGasto from '@/components/CardRendaGasto.vue';
+import axios from "axios";
 
 @Component({
     components: {
@@ -41,44 +42,59 @@ import CardRendaGasto from '@/components/CardRendaGasto.vue';
     }
 })
 class Home extends Vue {
-    get rendas() {
-        return [
-            {
-                data: "01/02/2021",
-                label: "Pagamento de Salário",
-                valor: 5500
-            },
-            {
-                data: "03/02/2021",
-                label: "Acerto de Dívida do Joel",
-                valor: 350
-            },
-            {
-                data: "05/02/2021",
-                label: "Dinheiro de não sei quem",
-                valor: 850
-            }
-        ];
+    rendas = [
+        {
+            data: "01/02/2021",
+            label: "Pagamento de Salário",
+            valor: 5500
+        },
+        {
+            data: "03/02/2021",
+            label: "Acerto de Dívida do Joel",
+            valor: 350
+        },
+        {
+            data: "05/02/2021",
+            label: "Dinheiro de não sei quem",
+            valor: 850
+        }
+    ];
+
+    gastos = [
+        {
+            data: "02/02/2021",
+            label: "Conta de Energia",
+            valor: 500
+        },
+        {
+            data: "03/02/2021",
+            label: "Conta de água",
+            valor: 350
+        },
+        {
+            data: "05/02/2021",
+            label: "Conta da Internet",
+            valor: 1500
+        }
+    ];
+
+    get totalGastos() {
+        return this.gastos.map((i) => i.valor).reduce((acumulado, current) => acumulado + current);
     }
 
-    get gastos() {
-        return [
-            {
-                data: "02/02/2021",
-                label: "Conta de Energia",
-                valor: 500
-            },
-            {
-                data: "03/02/2021",
-                label: "Conta de água",
-                valor: 350
-            },
-            {
-                data: "05/02/2021",
-                label: "Conta da Internet",
-                valor: 1500
-            }
-        ];
+    get totalRendas() {
+        return this.rendas.map((i) => i.valor).reduce((acumulado, current) => acumulado + current);
+    }
+
+    get totalDisponivel() {
+        return this.totalRendas - this.totalGastos;
+    }
+
+    async created() {
+        const movimentacoes: { data: string; label: string; valor: number; tipo: string; }[] = (await axios.get('http://localhost:8080/movimentacoes')).data;
+
+        this.gastos = movimentacoes.filter((item) => item.tipo === 'GASTO');
+        this.rendas = movimentacoes.filter((item) => item.tipo === 'RENDA');
     }
 }
 
