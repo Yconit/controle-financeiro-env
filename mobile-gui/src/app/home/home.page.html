@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Controle Financeiro Carol
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Informações rápidas</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <p><ion-badge color="danger">Gastos: {{ totalGasto | currency: 'BRL' }}</ion-badge></p>
+      <p><ion-badge color="success">Renda: {{ totalRenda | currency: 'BRL' }}</ion-badge></p>
+      <p><ion-badge color="primary">Disponível: {{ totalDisponivel | currency: 'BRL' }}</ion-badge></p>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Informações de tudo que você gastou</ion-card-subtitle>
+      <ion-card-title>Gastos</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let mov of gastos">
+          <ion-label>
+            <h2>{{ mov.label }}</h2>
+            <h3><ion-badge>{{ mov.data | date:'dd/MM/yy' }}</ion-badge></h3>
+            <p>{{ mov.valor | currency:'BRL' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>Informações de tudo que você recebeu</ion-card-subtitle>
+      <ion-card-title>Rendas</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let mov of rendas">
+          <ion-label>
+            <h2>{{ mov.label }}</h2>
+            <h3><ion-badge>{{ mov.data | date:'dd/MM/yy' }}</ion-badge></h3>
+            <p>{{ mov.valor | currency:'BRL' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="cadastroMovimentacao()">
+        <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="circles"
+      refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+</ion-content>

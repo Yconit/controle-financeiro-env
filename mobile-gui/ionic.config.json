@@ -1,0 +1,7 @@
+{
+  "name": "mobile-gui",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
